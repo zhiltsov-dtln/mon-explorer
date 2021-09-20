@@ -116,7 +116,7 @@ LOGGING = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql', # так должно быть с версии django 1,8 и выше.
-        'NAME': 'mcs',
+        'NAME': 'mcsdev',
         'USER': 'mon',
         'PASSWORD': 'monexplorer',
         'HOST': 'localhost',
