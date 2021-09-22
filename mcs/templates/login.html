@@ -1,0 +1,12 @@
+<h1>Registration</h1>
+{% if user.is_authenticated %}
+<p>Current user: {{ user.email }}</p>
+<p>contragent_id: {{ info.id }}</p>
+<p>contragent: {{ info.contragent }}</p>
+<form action="{% url 'oidc_logout' %}" method="post">
+  {% csrf_token %}
+  <input type="submit" value="logout">
+</form>
+{% else %}
+<a href="{% url 'oidc_authentication_init' %}">Login</a>
+{% endif %}
