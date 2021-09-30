@@ -44,35 +44,16 @@ def login(request, *args, **kwargs):
     res_id = get_contragent_id(request)
     context = {"info": res_id}
     return render(request, "login.html", context)
-    # try:
-    # mail = request.user.email
-    # logger.info("!!! MAIL FROM CLAIMS is " + str(mail))
-    # res_id = auth.check_contragent_id(request, mail, retry=0)
-    # logger.info(res_id)
-    # res_id = get_contragent_id(request)
-    # context = {"info": res_id}
-    # return render(request, "login.html", context)
-    # except:
-    # logger.info("Anonymus")
-    # return render(request, "login.html")
 
 
 def hosts_paginator(request, paginator_type):
     res_id = get_contragent_id(request)
-    # try:
-    #   mail = request.user.email
-    #  logger.info("!!! MAIL FROM CLAIMS is FOR hosts paginator" + str(mail))
-    # res_id = auth.check_contragent_id(request, mail, retry=0)
-    # except:
-    #   logger.info("Anonymus")
-    #  return render(request, "login.html")
-
     logger.info("contragent_id is" + str(res_id["id"]))
     agent_id = str(res_id["id"])
 
     hosts = ThrukHost.objects.filter(clid_source=agent_id)
 
-    paginator_url = "/?"
+    url = "/?"
     search_str = ""
     sort_str = ""
 
@@ -82,29 +63,48 @@ def hosts_paginator(request, paginator_type):
         raise Http404
 
     search_query = request.GET.getlist("search")
+    logger.info("search_query")
     logger.info(search_query)
 
     if search_query:
-
         for q in search_query:
             hosts = hosts.filter(name__icontains=q)
             search_str = search_str + "search=" + q + "&"
 
+    sort = request.GET.getlist("filter")
+    logger.info("filter")
+    logger.info(filter)
+
+    if filter:
+        hosts = hosts.order_by(*sort)
+        for s in sort:
+            sort_str = sort_str + "sort=" + s + "&"
+    else:
+        d = {}
+        try:
+            host = ThrukHost.objects.get(id=host_id)
+            fields = ThrukHost._meta.get_fields()
+            logger.info(getattr(host, "id"))
+            for f in fields:
+                d[f.verbose_name] = getattr(host, str(f.name))
+        except ThrukHost.DoesNotExist:
+            raise Http404
+
     sort = request.GET.getlist("sort")
+    logger.info("sort")
     logger.info(sort)
 
     if sort:
         hosts = hosts.order_by(*sort)
-
         for s in sort:
             sort_str = sort_str + "sort=" + s + "&"
-        # paginator_url = str(sort) + "/?page="
     else:
         hosts = hosts.order_by("name")
 
     limit = 50
     paginator = Paginator(hosts, limit)
-    paginator_url = paginator_url + search_str + sort_str + "page="
+    url = url + search_str + sort_str
+    paginator_url = url + "page="
     paginator.url = paginator_url
     try:
         page = paginator.page(page_number)
@@ -120,6 +120,7 @@ def hosts_paginator(request, paginator_type):
             "hosts_list": page.object_list,
             "info": res_id,
             "search_query": search_query,
+            "sort": sort,
         },
     )
 
