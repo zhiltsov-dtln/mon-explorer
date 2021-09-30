@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hosts</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+    <h1>{{ host.name }}</h1>
+    {% for field, value in fields.items %}
+    <div class="row">
+        <div class="col-4">{{ field }}</div>
+        <div class="col-4">{{ value }}</div>
+    </div>
+    {% endfor %}
+    <a class="btn btn-primary" href="/host/{{ host.id }}/json">View Json</a>
+    <a class="btn btn-primary" href="/">Main</a>
+</body>
+
+</html>

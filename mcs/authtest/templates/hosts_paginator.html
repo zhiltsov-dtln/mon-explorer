@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hosts</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+        <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+            <span class="fs-4">DataLine explorer</span>
+        </a>
+        {% if user.is_authenticated %}
+        <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+            <a class="me-3 py-2 text-dark text-decoration-none">Current user: {{ user.email }}</a>
+            <a class="me-3 py-2 text-dark text-decoration-none">contragent_id: {{ info.id }}</a>
+            <a class="me-3 py-2 text-dark text-decoration-none">contragent_name: {{ info.contragent }}</a>
+            <form class="me-3 py-2 text-dark text-decoration-none" action="{% url 'oidc_logout' %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="logout">
+            </form>
+        </nav>
+        {% else %}
+        <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'oidc_authentication_init' %}">Login</a>
+        {% endif %}
+    </div>
+    <h1>HOSTS</h1>
+
+    <form class="input-group" method="get">
+        <input name="search" type="text" class="form-control" placeholder="Поиск" href="{{ paginator.url }}{{ 1 }}"
+            value="{{ search }}">
+        <span class="input-group-btn">
+            <button type="submit" class="btn btn-default">Поиск</button>
+        </span>
+    </form>
+    <form method="get">
+        <button type="submit" class="btn btn-sm btn-primary btn-raised mr-3">'Сортировать'</button>
+        <input name="sort" type="checkbox" value="name" {{ by_name }}>по имени
+        <input name="sort" type="checkbox" value="peer_name" {{ by_peer }}>по Peer
+        <input name="sort" type="checkbox" value="support_group" {{ by_group }}>по SD_group
+    </form>
+
+
+    <div class="bd-example">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Nagios host name</th>
+                    <th scope="col">Nagios _HOST_TYPE</th>
+                    <th scope="col">Nagios PEER</th>
+                    <th scope="col">CLID</th>
+                    <th scope="col">Clid checked</th>
+                    <th scope="col">SD Support Group</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for host in hosts_list %}
+                <tr>
+                    <th scope="row"> <a href="/host/{{ host.id }}/">{{ host.name }}</a></th>
+                    <td>{{ host.host_type }}</td>
+                    <td>{{ host.peer_name }}</td>
+                    <td>{{ host.clid_source }}</td>
+                    <td>{{ host.clid_checked }}</td>
+                    <td>{{ host.support_group}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if page.number == 1%}
+            <li class="page-item disabled"><a class="page-link" href="{{ paginator.url }}{{ 1 }}">Первая</a>
+                {%else%}
+            <li class="page-item"><a class="page-link" href="{{ paginator.url }}{{ 1 }}">Первая</a>
+            </li>
+            {% endif%}
+            {% for n in paginator.page_range %}
+            {% if n == page.number%}
+            <li class="page-item active"><span class="page-link">{{ n }}</span>
+            </li>
+            {% elif n >= page.number|add:-3 and n <= page.number|add:3 %} <li class="page-item"><a class="page-link"
+                    href="{{ paginator.url }}{{ n }}">{{ n }} </a>
+                </li>
+                {% endif%}
+                {% endfor %}
+                {% if page.number == paginator.num_pages%}
+                <li class="page-item disabled"><a class="page-link"
+                        href="{{ paginator.url }}{{ paginator.num_pages }}">Последняя</a>
+                    {%else%}
+                <li class="page-item"><a class="page-link"
+                        href="{{ paginator.url }}{{ paginator.num_pages }}">Последняя</a>
+                    {% endif%}
+        </ul>
+    </nav>
+
+
+</body>
+
+</html>
