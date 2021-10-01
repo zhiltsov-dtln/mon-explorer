@@ -1,4 +1,5 @@
 from authtest import auth
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 import logging
@@ -50,7 +51,10 @@ def hosts_paginator(request, paginator_type):
     res_id = get_contragent_id(request)
     logger.info("contragent_id is" + str(res_id["id"]))
     agent_id = str(res_id["id"])
-
+    url = "/?"
+    search_str = ""
+    filter_peer_str = ""
+    sort_str = ""
     hosts = ThrukHost.objects.filter(clid_source=agent_id)
 
     try:
@@ -60,8 +64,9 @@ def hosts_paginator(request, paginator_type):
 
     search = request.GET.get("search")
 
-    if search:
+    if search and search != "search=":
         search_query = str(search)
+        search_str = "search=" + search_query + "&"
         search_query = search_query.split(" ")
         logger.info("search_query")
         logger.info(search_query)
@@ -70,16 +75,20 @@ def hosts_paginator(request, paginator_type):
     else:
         search = ""
 
-    # fields = getattr(hosts, "peer_name")
     fields_peer = hosts.values_list("peer_name", flat=True)
     UniqFiledsPeer = list(set(fields_peer))
     logger.info(UniqFiledsPeer)
 
-    filter_peer = request.GET.get("peer_name")
+    filter_peer = request.GET.getlist("peer_name")
     if filter_peer:
-        hosts = hosts.filter(peer_name=filter_peer)
-    logger.info("filter_peer")
-    logger.info(filter_peer)
+        logger.info("filter_peer")
+        logger.info(filter_peer)
+        q_objects = Q()
+        for f in filter_peer:
+            filter_peer_str = filter_peer_str + "peer_name=" + f + "&"
+            q_objects |= Q(peer_name=f)
+
+        hosts = hosts.filter(q_objects)
 
     sort = request.GET.getlist("sort")
     logger.info("sort")
@@ -87,12 +96,14 @@ def hosts_paginator(request, paginator_type):
 
     if sort:
         hosts = hosts.order_by(*sort)
+        for s in sort:
+            sort_str = sort_str + "sort=" + s + "&"
     else:
         hosts = hosts.order_by("name")
 
     limit = 50
     paginator = Paginator(hosts, limit)
-    paginator_url = "/?" + search + "page="
+    paginator_url = url + search_str + filter_peer_str + sort_str + "page="
     paginator.url = paginator_url
     try:
         page = paginator.page(page_number)
