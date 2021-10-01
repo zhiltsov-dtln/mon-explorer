@@ -53,42 +53,33 @@ def hosts_paginator(request, paginator_type):
 
     hosts = ThrukHost.objects.filter(clid_source=agent_id)
 
-    url = "/?"
-    search_str = ""
-    sort_str = ""
-
     try:
         page_number = int(request.GET.get("page", 1))
     except ValueError:  # 'page' is not a number
         raise Http404
 
-    search_query = request.GET.getlist("search")
-    logger.info("search_query")
-    logger.info(search_query)
+    search = request.GET.get("search")
 
-    if search_query:
+    if search:
+        search_query = str(search)
+        search_query = search_query.split(" ")
+        logger.info("search_query")
+        logger.info(search_query)
         for q in search_query:
             hosts = hosts.filter(name__icontains=q)
-            search_str = search_str + "search=" + q + "&"
-
-    sort = request.GET.getlist("filter")
-    logger.info("filter")
-    logger.info(filter)
-
-    if filter:
-        hosts = hosts.order_by(*sort)
-        for s in sort:
-            sort_str = sort_str + "sort=" + s + "&"
     else:
-        d = {}
-        try:
-            host = ThrukHost.objects.get(id=host_id)
-            fields = ThrukHost._meta.get_fields()
-            logger.info(getattr(host, "id"))
-            for f in fields:
-                d[f.verbose_name] = getattr(host, str(f.name))
-        except ThrukHost.DoesNotExist:
-            raise Http404
+        search = ""
+
+    # fields = getattr(hosts, "peer_name")
+    fields_peer = hosts.values_list("peer_name", flat=True)
+    UniqFiledsPeer = list(set(fields_peer))
+    logger.info(UniqFiledsPeer)
+
+    filter_peer = request.GET.get("peer_name")
+    if filter_peer:
+        hosts = hosts.filter(peer_name=filter_peer)
+    logger.info("filter_peer")
+    logger.info(filter_peer)
 
     sort = request.GET.getlist("sort")
     logger.info("sort")
@@ -96,15 +87,12 @@ def hosts_paginator(request, paginator_type):
 
     if sort:
         hosts = hosts.order_by(*sort)
-        for s in sort:
-            sort_str = sort_str + "sort=" + s + "&"
     else:
         hosts = hosts.order_by("name")
 
     limit = 50
     paginator = Paginator(hosts, limit)
-    url = url + search_str + sort_str
-    paginator_url = url + "page="
+    paginator_url = "/?" + search + "page="
     paginator.url = paginator_url
     try:
         page = paginator.page(page_number)
@@ -119,8 +107,10 @@ def hosts_paginator(request, paginator_type):
             "page": page,
             "hosts_list": page.object_list,
             "info": res_id,
-            "search_query": search_query,
+            "search": search,
             "sort": sort,
+            "UniqFiledsPeer": UniqFiledsPeer,
+            "filter_peer": filter_peer,
         },
     )
 
