@@ -9,6 +9,7 @@ from django.shortcuts import render
 from django.http import (
     HttpResponse,
     Http404,
+    HttpResponseRedirect,
     HttpResponseServerError,
     JsonResponse,
     response,
@@ -30,15 +31,14 @@ def test(request, *args, **kwargs):
 
 
 def get_contragent_id(request):
-    try:
+    if request.user.is_authenticated:
         mail = request.user.email
         logger.info("!!! MAIL FROM LAIMS is " + str(mail))
         res_id = auth.check_contragent_id(request, mail, retry=0)
         logger.info(res_id)
         return res_id
-    except:
-        logger.info("Anonymus")
-        return render(request, "login.html")
+    else:
+        HttpResponseRedirect("login.html")
 
 
 def login(request, *args, **kwargs):
@@ -49,6 +49,10 @@ def login(request, *args, **kwargs):
 
 def hosts_paginator(request, paginator_type):
     res_id = get_contragent_id(request)
+    logger.info("res_id")
+    logger.info(res_id)
+    if not res_id:
+        return render(request, "login.html")
     logger.info("contragent_id is" + str(res_id["id"]))
     agent_id = str(res_id["id"])
     url = "/?"
