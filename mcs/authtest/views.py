@@ -54,8 +54,10 @@ def hosts_paginator(request, paginator_type):
     url = "/?"
     search_str = ""
     filter_peer_str = ""
+    filter_sd_group_str = ""
     sort_str = ""
     hosts = ThrukHost.objects.filter(clid_source=agent_id)
+    count_all = hosts.count()
 
     try:
         page_number = int(request.GET.get("page", 1))
@@ -75,6 +77,8 @@ def hosts_paginator(request, paginator_type):
     else:
         search = ""
 
+    # q_objects = Q()
+
     fields_peer = hosts.values_list("peer_name", flat=True)
     UniqFiledsPeer = list(set(fields_peer))
     logger.info(UniqFiledsPeer)
@@ -90,6 +94,21 @@ def hosts_paginator(request, paginator_type):
 
         hosts = hosts.filter(q_objects)
 
+    fields_sd_group = hosts.values_list("support_group", flat=True)
+    UniqFiledsSDgroup = list(set(fields_sd_group))
+    logger.info(UniqFiledsSDgroup)
+
+    filter_sd_group = request.GET.getlist("support_group")
+    if filter_sd_group:
+        logger.info("filter_sd_group")
+        logger.info(filter_sd_group)
+        q_objects = Q()
+        for f in filter_sd_group:
+            filter_sd_group_str = filter_sd_group_str + "support_group=" + f + "&"
+            q_objects |= Q(support_group=f)
+
+        hosts = hosts.filter(q_objects)
+    count = hosts.count()
     sort = request.GET.getlist("sort")
     logger.info("sort")
     logger.info(sort)
@@ -103,7 +122,9 @@ def hosts_paginator(request, paginator_type):
 
     limit = 50
     paginator = Paginator(hosts, limit)
-    paginator_url = url + search_str + filter_peer_str + sort_str + "page="
+    paginator_url = (
+        url + search_str + filter_peer_str + filter_sd_group_str + sort_str + "page="
+    )
     paginator.url = paginator_url
     try:
         page = paginator.page(page_number)
@@ -119,9 +140,15 @@ def hosts_paginator(request, paginator_type):
             "hosts_list": page.object_list,
             "info": res_id,
             "search": search,
+            "search_str": search_str,
             "sort": sort,
+            "sort_str": sort_str,
             "UniqFiledsPeer": UniqFiledsPeer,
             "filter_peer": filter_peer,
+            "UniqFiledsSDgroup": UniqFiledsSDgroup,
+            "filter_sd_group": filter_sd_group,
+            "count": count,
+            "count_all": count_all,
         },
     )
 

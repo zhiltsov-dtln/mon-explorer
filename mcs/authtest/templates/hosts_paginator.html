@@ -86,9 +86,10 @@
                 <a class="me-3 py-2 text-dark text-decoration-none">Current user: {{ user.email }}</a>
                 <a class="me-3 py-2 text-dark text-decoration-none">contragent_id: {{ info.id }}</a>
                 <a class="me-3 py-2 text-dark text-decoration-none">contragent_name: {{ info.contragent }}</a>
-                <form action="{% url 'oidc_logout' %}" method="post" class="changelist-form-container">
+                <form action="{% url 'oidc_logout' %}" method="post">
                     {% csrf_token %}
                     <input type="submit" value="logout">
+                </form>
             </nav>
             {% else %}
             <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'oidc_authentication_init' %}">Login</a>
@@ -108,7 +109,7 @@
                         <input name="search" size="60" id="searchbar" autofocus="" type="text" class="form-control"
                             placeholder="Поиск" value="{{ search }}">
                         <input type="submit" value="Search">
-                        <span class="small quiet">### results (<a href="?">### total</a>)</span>
+                        <span class="small quiet">{{ count }} results (<a href="?">{{count_all}} total</a>)</span>
                         <input type="submit" value="Сортировать">
                         {% if "name" in sort %}
                         <input name="sort" type="checkbox" value="name" checked="checked" {{by_name }}>по имени
@@ -126,6 +127,12 @@
                         {% else %}
                         <input name="sort" type="checkbox" value="support_group" {{ by_group }}>по SD_group
                         {% endif %}
+                        {% for f in filter_peer %}
+                        <input type="hidden" name="peer_name" value="{{ f }}">
+                        {% endfor %}
+                        {% for g in filter_sd_group %}
+                        <input type="hidden" name="support_group" value="{{ g }}">
+                        {% endfor %}
                     </form>
                 </div>
                 <div class="hosts_list">
@@ -180,18 +187,36 @@
             </div>
             <div id="changelist-filter">
                 <h2>Filter</h2>
+                <h3 id="changelist-filter-clear">
+                    <a href="?{{ search_str }}">✖ Clear all filters</a>
+                </h3>
                 <form id="filter" method="get">
-                    <input type="submit" value="Сортировать">
-
+                    <input type="submit" value="Фильтровать">
+                    <input type="hidden" name="search" value="{{ search }}">
+                    {% for s in sort %}
+                    <input type="hidden" name="sort" value="{{ s }}">
+                    {% endfor %}
                     <h4> By Nagios Peer </h4>
                     <ul>
                         {% for FiledPeer in UniqFiledsPeer %}
                         <li>
                             {% if FiledPeer in filter_peer %}
-                            <input name="peer_name" type="checkbox" value={{FiledPeer}} checked="checked">{{ FiledPeer
-                            }}
+                            <input name="peer_name" type="checkbox" value={{FiledPeer}} checked="checked">{{ FiledPeer}}
                             {% else %}
                             <input name="peer_name" type="checkbox" value={{FiledPeer}}>{{ FiledPeer }}
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                    <h4> By Support Group </h4>
+                    <ul>
+                        {% for grp in UniqFiledsSDgroup %}
+                        <li>
+                            {% if grp in filter_sd_group %}
+                            <input name="support_group" type="checkbox" value="{{ grp }}" checked="checked">{{grp}}
+                            {% else %}
+                            <input name="support_group" type="checkbox" value="{{ grp }}">{{ grp }}
                             {% endif %}
                         </li>
                         {% endfor %}
