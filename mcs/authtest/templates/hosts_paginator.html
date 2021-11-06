@@ -76,29 +76,27 @@
 </head>
 
 <body>
-    <div id="header">
+    <div id="header" class="module filtered">
         <h1 id="site-name"><a href="/">DataLine explorer</a></h1>
-        <div id="branding">
-        </div>
-        <div id="user-tools">
+        <div id="user-tools" class="changelist-form-container">
             {% if user.is_authenticated %}
             <nav>
-                <a class="me-3 py-2 text-dark text-decoration-none">Current user: {{ user.email }}</a>
-                <a class="me-3 py-2 text-dark text-decoration-none">contragent_id: {{ info.id }}</a>
-                <a class="me-3 py-2 text-dark text-decoration-none">contragent_name: {{ info.contragent }}</a>
+                <a>Current user: {{ user.email }}</a>
+                <a>contragent_id: {{ info.id }}</a>
+                <a>contragent_name: {{ info.contragent }}</a>
                 <form action="{% url 'oidc_logout' %}" method="post">
                     {% csrf_token %}
                     <input type="submit" value="logout">
                 </form>
             </nav>
             {% else %}
-            <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'oidc_authentication_init' %}">Login</a>
+            <a href="{% url 'oidc_authentication_init' %}">Login</a>
             {% endif %}
         </div>
 
     </div>
 
-    <div id="content" class=""></div>
+
     <h1>HOSTS</h1>
     <div id="content-main">
         <div class="module filtered" id="changelist">
