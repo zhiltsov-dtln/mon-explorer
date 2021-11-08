@@ -14,6 +14,7 @@ from django.http import (
     JsonResponse,
     response,
 )
+import re
 
 from explorer.models import ThrukHost
 
@@ -34,7 +35,15 @@ def get_contragent_id(request):
     if request.user.is_authenticated:
         mail = request.user.email
         logger.info("!!! MAIL FROM LAIMS is " + str(mail))
-        res_id = auth.check_contragent_id(request, mail, retry=0)
+        res = re.match(r"(.*)@mon\.dtln\.local", mail)
+        if res:
+            logger.info(
+                "User is local. Registrated in Django Admin. Do not check contragent ID, Set 1. Username is"
+                + res.group(1)
+            )
+            res_id = {"rc": "200", "id": 1, "contragent": "Даталайн"}
+        else:
+            res_id = auth.check_contragent_id(request, mail, retry=0)
         logger.info(res_id)
         return res_id
     else:

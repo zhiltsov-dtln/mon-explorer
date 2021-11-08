@@ -9,15 +9,6 @@ from .models import (
 from .rest_truck import (
     thruk_request2df,
 )
-from mozilla_django_oidc.auth import OIDCAuthenticationBackend
-
-
-class MyOIDCAB(OIDCAuthenticationBackend):
-    def verify_claims(self, claims):
-        print(claims)
-        verified = super(MyOIDCAB, self).verify_claims(claims) or claims.email_verified
-        is_admin = "admin" in claims.get("group", [])
-        return verified and is_admin
 
 
 class ObjectAdmin(admin.ModelAdmin):
@@ -51,12 +42,7 @@ class RefsAdmin(ObjectAdmin):
             "description",
             "display_name",
         ]
-        columns = [
-            "host_name",
-            "description",
-            "display_name",
-        ]
-        thruk_request2df(thruk_filter, attributes, columns)
+        thruk_request2df(thruk_filter, attributes)
         return HttpResponseRedirect("../")
 
     list_display = (
@@ -64,17 +50,19 @@ class RefsAdmin(ObjectAdmin):
         "description",
         "contragent",
         "contragent_id",
-        "archived",
+        "actual",
         "archived_datetime",
+        "id_matched",
     )
     search_fields = ("host_name",)
-    list_filter = ("host_name", "archived")
+    list_filter = ("host_name", "actual", "id_matched")
     readonly_fields = (
         "host_name",
         "description",
         "id",
-        "archived",
+        "actual",
         "archived_datetime",
+        "id_matched",
     )
 
 

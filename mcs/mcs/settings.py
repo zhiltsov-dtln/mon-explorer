@@ -58,7 +58,8 @@ MIDDLEWARE = [
 
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
-    "mozilla_django_oidc.auth.OIDCAuthenticationBackend",
+    # "mozilla_django_oidc.auth.OIDCAuthenticationBackend",
+    "refs.auth.MyOIDCAB",
 ]
 
 ROOT_URLCONF = "mcs.urls"
@@ -170,6 +171,7 @@ OIDC_OP_AUTHORIZATION_ENDPOINT = configuration.OIDC_OP_AUTHORIZATION_ENDPOINT
 OIDC_OP_JWKS_ENDPOINT = configuration.OIDC_OP_JWKS_ENDPOINT
 OIDC_OP_USER_ENDPOINT = configuration.OIDC_OP_USER_ENDPOINT
 OIDC_OP_LOGOUT_URL_METHOD = configuration.OIDC_OP_LOGOUT_URL_METHOD
+# OIDC_USERNAME_ALGO = ./username.py
 
 
 SD_URL = configuration.SD_URL

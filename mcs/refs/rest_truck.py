@@ -39,62 +39,57 @@ def get_rest_api_response(request_url):
     return ""
 
 
-def thruk_request2df(records_filter, record_attrs, column_names):
-    """Construct URL, make request to Thruk REST API and return Dataframe.
+def thruk_request2df(records_filter, record_attrs):
 
-    Args:
-        records_filter (String): Part of Thruk REST API URL with Nagios objects (Hosts, Services, Commands, etc) filter
-        record_attrs (List): List of requested Nagios object attributes
-        column_names (List): List of DataFrame columns names
-
-    Returns:
-        DataFrame: Nagios objects DataFrame with attributes
-    """
     thruk_rest_api_url = (
         THRUK_ROOT_URL + records_filter + "&columns=" + ",".join(record_attrs)
     )
-    res = get_rest_api_response(thruk_rest_api_url)
-    dictData = json.loads(res)
-    x = BackupFolder()
-    all = BackupFolder.objects.all()
-    for i in dictData:
+    json_out = get_rest_api_response(thruk_rest_api_url)
+    dict_from_json_out = json.loads(json_out)
+
+    exlude_list_for_arhived = BackupFolder.objects.all()
+
+    for svc in dict_from_json_out:
+        pgslq_id = svc["host_name"] + svc["description"]
+        exlude_list_for_arhived = exlude_list_for_arhived.exclude(id=pgslq_id)
         try:
-            obj = BackupFolder.objects.get(id=(i["host_name"] + i["description"]))
-            all = all.exclude(id=(i["host_name"] + i["description"]))
-            res = re.match(r"Mount:\s\w+\.\sContragent_id:\s(\d+)", i["display_name"])
-            if res:
-                if obj.contragent_id != int(res.group(1)):
-                    logger.info(
-                        "ID in DB != ID in nagios"
-                        + str(obj.host_name)
-                        + str(obj.description)
-                        + " ID = "
-                        + str(obj.contragent_id)
-                    )
-            obj.archived = False
-            obj.archived_datetime = None
-            obj.save()
-        except BackupFolder.DoesNotExist:
-            logger.info(
-                "HOST Does not exists in DB. Will be add"
-                + str(i["host_name"] + str(i["description"]))
+            pgsql_obj = BackupFolder.objects.get(id=pgslq_id)
+
+            search_agent_id = re.match(
+                r"Mount:\s\w+\.\sContragent_id:\s(\d+)", svc["display_name"]
             )
-            all = all.exclude(id=(i["host_name"] + i["description"]))
-            x.id = i["host_name"] + i["description"]
-            x.host_name = i["host_name"]
-            x.description = i["description"]
-            x.archived = False
-            res = re.match(r"Mount:\s\w+\.\sContragent_id:\s(\d+)", i["display_name"])
-            if res:
-                x.contragent_id = int(res.group(1))
-            x.save()
-    all = all.exclude(archived=True)
-    for a in all:
+            if search_agent_id:
+                if pgsql_obj.contragent_id != int(search_agent_id.group(1)):
+                    logger.warning("ID in DB != ID in nagios")
+                    pgsql_obj.id_matched = False
+                else:
+                    pgsql_obj.id_matched = True
+            pgsql_obj.actual = True
+            pgsql_obj.archived_datetime = None
+            pgsql_obj.save()
+        except BackupFolder.DoesNotExist:
+            new_pgsql_obj = BackupFolder()
+            logger.info("HOST Does not exists in DB. Will be add" + str(pgslq_id))
+
+            new_pgsql_obj.id = pgslq_id
+            new_pgsql_obj.host_name = svc["host_name"]
+            new_pgsql_obj.description = svc["description"]
+            new_pgsql_obj.actual = True
+            search_agent_id = re.match(
+                r"Mount:\s\w+\.\sContragent_id:\s(\d+)", svc["display_name"]
+            )
+            if search_agent_id:
+                new_pgsql_obj.contragent_id = int(search_agent_id.group(1))
+            new_pgsql_obj.save()
+
+    exlude_list_for_arhived = exlude_list_for_arhived.exclude(actual=False)
+
+    for remain in exlude_list_for_arhived:
         logger.info(
             "SVC not in Nagios, will be arhivated "
-            + str(a.host_name)
-            + str(a.description)
+            + str(remain.host_name)
+            + str(remain.description)
         )
-        a.archived = True
-        a.archived_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        a.save()
+        remain.actual = False
+        remain.archived_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        remain.save()
