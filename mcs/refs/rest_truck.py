@@ -61,16 +61,18 @@ def thruk_request2df(records_filter, record_attrs, column_names):
         try:
             obj = BackupFolder.objects.get(id=(i["host_name"] + i["description"]))
             all = all.exclude(id=(i["host_name"] + i["description"]))
-            # logger.info(
-            #   str(obj.host_name)
-            #  + str(obj.description)
-            # + " ID = "
-            # + str(obj.contragent_id)
-            # )
             res = re.match(r"Mount:\s\w+\.\sContragent_id:\s(\d+)", i["display_name"])
             if res:
-                obj.contragent_id = int(res.group(1))
+                if obj.contragent_id != int(res.group(1)):
+                    logger.info(
+                        "ID in DB != ID in nagios"
+                        + str(obj.host_name)
+                        + str(obj.description)
+                        + " ID = "
+                        + str(obj.contragent_id)
+                    )
             obj.archived = False
+            obj.archived_datetime = None
             obj.save()
         except BackupFolder.DoesNotExist:
             logger.info(
@@ -86,6 +88,7 @@ def thruk_request2df(records_filter, record_attrs, column_names):
             if res:
                 x.contragent_id = int(res.group(1))
             x.save()
+    all = all.exclude(archived=True)
     for a in all:
         logger.info(
             "SVC not in Nagios, will be arhivated "
