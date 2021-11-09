@@ -177,3 +177,5 @@ OIDC_OP_LOGOUT_URL_METHOD = configuration.OIDC_OP_LOGOUT_URL_METHOD
 SD_URL = configuration.SD_URL
 SD_LOGIN = configuration.SD_LOGIN
 SD_PWD = configuration.SD_PWD
+
+GRAPPELLI_ADMIN_TITLE = "Конфигурация Nagios обновляется ежедневно в 9:00. Данные данной страницы загружаются из Nagios ежедневно в 9:30."
