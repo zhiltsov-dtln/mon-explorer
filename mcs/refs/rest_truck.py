@@ -66,6 +66,7 @@ def thruk_request2df(records_filter, record_attrs):
                     pgsql_obj.id_matched = True
             pgsql_obj.actual = True
             pgsql_obj.archived_datetime = None
+            pgsql_obj.display_name = svc["display_name"]
             pgsql_obj.save()
         except BackupFolder.DoesNotExist:
             new_pgsql_obj = BackupFolder()
@@ -74,6 +75,7 @@ def thruk_request2df(records_filter, record_attrs):
             new_pgsql_obj.id = pgslq_id
             new_pgsql_obj.host_name = svc["host_name"]
             new_pgsql_obj.description = svc["description"]
+            new_pgsql_obj.display_name = svc["display_name"]
             new_pgsql_obj.actual = True
             search_agent_id = re.match(
                 r"Mount:\s\w+\.\sContragent_id:\s(\d+)", svc["display_name"]

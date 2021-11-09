@@ -45,16 +45,18 @@ class RefsAdmin(ObjectAdmin):
         thruk_request2df(thruk_filter, attributes)
         return HttpResponseRedirect("../")
 
+    list_display_links = ("description",)
     list_display = (
         "host_name",
         "description",
         "contragent",
         "contragent_id",
+        "display_name",
         "actual",
         "archived_datetime",
         "id_matched",
     )
-    search_fields = ("host_name",)
+    search_fields = ("description", "contragent")
     list_filter = ("host_name", "actual", "id_matched")
     readonly_fields = (
         "host_name",
@@ -63,6 +65,7 @@ class RefsAdmin(ObjectAdmin):
         "actual",
         "archived_datetime",
         "id_matched",
+        "display_name",
     )
 
 
