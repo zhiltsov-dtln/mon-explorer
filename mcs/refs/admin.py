@@ -33,7 +33,7 @@ class ObjectAdmin(admin.ModelAdmin):
 
 class RefsAdmin(ObjectAdmin):
 
-    change_list_template = "admin/thrukhost_update_list.html"
+    change_list_template = "admin/backup_update_list.html"
 
     def process_import(self, request):
         thruk_filter = "services?host_name[regex]=^ReFS&display_name[regex]=^Mount:"  # "hosts?name[regex]=^ReFS"  # host_name=ReFS-NORD02"  #
