@@ -34,6 +34,7 @@ def test(request, *args, **kwargs):
 def get_contragent_id(request):
     if request.user.is_authenticated:
         mail = request.user.email
+
         logger.info("!!! MAIL FROM LAIMS is " + str(mail))
         res = re.match(r"(.*)@mon\.dtln\.local", mail)
         if res:
@@ -63,6 +64,9 @@ def hosts_paginator(request, paginator_type):
     if not res_id:
         return render(request, "login.html")
     logger.info("contragent_id is" + str(res_id["id"]))
+    if request.user.groups.filter(name="ReFS Editors").exists():
+        return HttpResponseRedirect("/admin/refs/backupfolder/")
+
     agent_id = str(res_id["id"])
     url = "/?"
     search_str = ""
