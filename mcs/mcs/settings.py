@@ -33,10 +33,11 @@ ALLOWED_HOSTS = ["explorer.mon.dtln.local", "localhost", "127.0.0.1"]
 # Application definition
 
 INSTALLED_APPS = [
-    "grappelli",
-    "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
+    # "grappelli.dashboard",
+    "grappelli",
+    "django.contrib.admin",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
@@ -178,4 +179,5 @@ SD_URL = configuration.SD_URL
 SD_LOGIN = configuration.SD_LOGIN
 SD_PWD = configuration.SD_PWD
 
-GRAPPELLI_ADMIN_TITLE = "Конфигурация Nagios обновляется ежедневно в 9:00. Данные данной страницы загружаются из Nagios ежедневно в 9:30."
+# GRAPPELLI_ADMIN_TITLE = "Конфигурация Nagios обновляется ежедневно в 9:00. Данные данной страницы загружаются из Nagios ежедневно в 9:30."
+# GRAPPELLI_INDEX_DASHBOARD = "mcs.dashboard.CustomIndexDashboard"
