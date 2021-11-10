@@ -8,7 +8,7 @@ class BackupFolder(models.Model):
     contragent = models.ForeignKey(Contragent, on_delete=models.SET("None"), null=True)
     description = models.CharField("Nagios Service", max_length=255)
     display_name = models.CharField("Nagios Display Name", max_length=255, null=True)
-    actual = models.BooleanField("Actual/Archived ", null=True)
+    actual = models.BooleanField("Actual/Archived ", default=True)
     archived_datetime = models.DateTimeField("Archived Timestamp", null=True)
     id_matched = models.BooleanField("Id Matched in Nagios", null=True)
 
