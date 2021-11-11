@@ -56,7 +56,7 @@ class RefsAdmin(ObjectAdmin):
         "archived_datetime",
         "id_matched",
     )
-    search_fields = ("description", "contragent")
+    search_fields = ("description", "contragent__name")
     list_filter = ("host_name", "actual", "id_matched")
     readonly_fields = (
         "host_name",
