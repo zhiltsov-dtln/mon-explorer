@@ -76,6 +76,7 @@ if __name__ == "__main__":
 
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mcs.settings")
     django.setup()
-    update_refs()
+
     update_customer()
     update_contragent_id()
+    update_refs()
