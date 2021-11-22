@@ -50,3 +50,8 @@ sftp-config.json
 # pyenv 
 .python-version
 
+<<<<<<< HEAD
+=======
+/mcs/mcs/configuration.py
+
+>>>>>>> 917aaea5ec2b59cbdb6e3d8822b9c3e974e0d523
