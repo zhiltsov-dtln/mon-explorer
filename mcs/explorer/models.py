@@ -18,6 +18,13 @@ class Contragent(models.Model):
     archived = models.BooleanField("Archived or not")
     archived_datetime = models.DateTimeField("Archived DateTime", null=True)
 
+    @staticmethod
+    def autocomplete_search_fields():
+        return (
+            "id__iexact",
+            "name__icontains",
+        )
+
     def __str__(self):
         return self.name if self.name else "Unnamed"
 

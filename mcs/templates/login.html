@@ -1,12 +1,36 @@
-<h1>Registration</h1>
-{% if user.is_authenticated %}
-<p>Current user: {{ user.email }}</p>
-<p>contragent_id: {{ info.id }}</p>
-<p>contragent: {{ info.contragent }}</p>
-<form action="{% url 'oidc_logout' %}" method="post">
-  {% csrf_token %}
-  <input type="submit" value="logout">
-</form>
-{% else %}
-<a href="{% url 'oidc_authentication_init' %}">Login</a>
-{% endif %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Registration</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+
+  <body class="text-center">
+
+    <main class="form-signin">
+
+      <h1 class="h3 mb-3 fw-normal">Registration</h1>
+      {% if user.is_authenticated %}
+      <p>Current user: {{ user.email }}</p>
+      <p>contragent_id: {{ info.id }}</p>
+      <p>contragent: {{ info.contragent }}</p>
+      <form action="{% url 'oidc_logout' %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="logout">
+      </form>
+      {% else %}
+
+      <a href="{% url 'oidc_authentication_init' %}" class="w-100 btn btn-lg btn-primary" type="submit">
+        <span>Login</span>
+      </a>
+      {% endif %}
+
+    </main>
+
+  </body>
+
+</html>

@@ -222,10 +222,14 @@ sqlparse = ">=0.2.0"
 [[package]]
 name = "django-grappelli"
 <<<<<<< HEAD
+<<<<<<< HEAD
 version = "2.15.3"
 =======
 version = "2.15.1"
 >>>>>>> 917aaea5ec2b59cbdb6e3d8822b9c3e974e0d523
+=======
+version = "2.15.3"
+>>>>>>> ee18e194eeea59eadeaf8fe3d8eea0594adc1f71
 description = "A jazzy skin for the Django Admin-Interface."
 category = "main"
 optional = false
@@ -769,6 +773,7 @@ python-versions = "*"
 lock-version = "1.1"
 python-versions = "^3.9"
 <<<<<<< HEAD
+<<<<<<< HEAD
 content-hash = "29dd4412d38b9d6437ac8ce91d8a972a87375c4213abb85eded29bf374d8c591"
 
 [metadata.files]
@@ -778,6 +783,9 @@ apscheduler = [
 ]
 =======
 content-hash = "fb12532c8c74ec874f1f316c695d1413b5285121edb7a1b8a1571a373c00b909"
+=======
+content-hash = "3471eba2b542f0c9a88b11dbee95635807df79706b8e8ed25e2828a4f629ad63"
+>>>>>>> ee18e194eeea59eadeaf8fe3d8eea0594adc1f71
 
 [metadata.files]
 >>>>>>> 917aaea5ec2b59cbdb6e3d8822b9c3e974e0d523
@@ -873,10 +881,15 @@ cryptography = [
     {file = "cryptography-3.4.8-cp36-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1eb7bb0df6f6f583dd8e054689def236255161ebbcf62b226454ab9ec663746b"},
     {file = "cryptography-3.4.8-cp36-abi3-manylinux_2_24_x86_64.whl", hash = "sha256:9965c46c674ba8cc572bc09a03f4c649292ee73e1b683adb1ce81e82e9a6a0fb"},
 <<<<<<< HEAD
+<<<<<<< HEAD
     {file = "cryptography-3.4.8-cp36-abi3-musllinux_1_1_aarch64.whl", hash = "sha256:3c4129fc3fdc0fa8e40861b5ac0c673315b3c902bbdc05fc176764815b43dd1d"},
     {file = "cryptography-3.4.8-cp36-abi3-musllinux_1_1_x86_64.whl", hash = "sha256:695104a9223a7239d155d7627ad912953b540929ef97ae0c34c7b8bf30857e89"},
 =======
 >>>>>>> 917aaea5ec2b59cbdb6e3d8822b9c3e974e0d523
+=======
+    {file = "cryptography-3.4.8-cp36-abi3-musllinux_1_1_aarch64.whl", hash = "sha256:3c4129fc3fdc0fa8e40861b5ac0c673315b3c902bbdc05fc176764815b43dd1d"},
+    {file = "cryptography-3.4.8-cp36-abi3-musllinux_1_1_x86_64.whl", hash = "sha256:695104a9223a7239d155d7627ad912953b540929ef97ae0c34c7b8bf30857e89"},
+>>>>>>> ee18e194eeea59eadeaf8fe3d8eea0594adc1f71
     {file = "cryptography-3.4.8-cp36-abi3-win32.whl", hash = "sha256:21ca464b3a4b8d8e86ba0ee5045e103a1fcfac3b39319727bc0fc58c09c6aff7"},
     {file = "cryptography-3.4.8-cp36-abi3-win_amd64.whl", hash = "sha256:3520667fda779eb788ea00080124875be18f2d8f0848ec00733c0ec3bb8219fc"},
     {file = "cryptography-3.4.8-pp36-pypy36_pp73-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:d2a6e5ef66503da51d2110edf6c403dc6b494cc0082f85db12f54e9c5d4c3ec5"},
@@ -906,12 +919,17 @@ django-debug-toolbar = [
 ]
 django-grappelli = [
 <<<<<<< HEAD
+<<<<<<< HEAD
     {file = "django-grappelli-2.15.3.tar.gz", hash = "sha256:e21dc664faef6990006c05a6939ee1e2839e13834a338b1f644ea6edb19f68de"},
     {file = "django_grappelli-2.15.3-py2.py3-none-any.whl", hash = "sha256:edfb8539d000d5908836d909134021c6b3ab3bd2975e7524385b9b3736548598"},
 =======
     {file = "django-grappelli-2.15.1.tar.gz", hash = "sha256:bc38e7c2585c20b6c8c6a4d984beb4c0fe62ae13421d1fe6614d04dda2096014"},
     {file = "django_grappelli-2.15.1-py2.py3-none-any.whl", hash = "sha256:b9aa386d63a95c37f3741aac98bd545c70ff51cf9104a1419dd6568d2e2cf2ea"},
 >>>>>>> 917aaea5ec2b59cbdb6e3d8822b9c3e974e0d523
+=======
+    {file = "django-grappelli-2.15.3.tar.gz", hash = "sha256:e21dc664faef6990006c05a6939ee1e2839e13834a338b1f644ea6edb19f68de"},
+    {file = "django_grappelli-2.15.3-py2.py3-none-any.whl", hash = "sha256:edfb8539d000d5908836d909134021c6b3ab3bd2975e7524385b9b3736548598"},
+>>>>>>> ee18e194eeea59eadeaf8fe3d8eea0594adc1f71
 ]
 flake8 = [
     {file = "flake8-3.9.2-py2.py3-none-any.whl", hash = "sha256:bf8fd333346d844f616e8d47905ef3a3384edae6b4e9beb0c5101e25e3110907"},
@@ -1091,6 +1109,13 @@ pluggy = [
 ]
 psycopg2-binary = [
     {file = "psycopg2-binary-2.9.1.tar.gz", hash = "sha256:b0221ca5a9837e040ebf61f48899926b5783668b7807419e4adae8175a31f773"},
+    {file = "psycopg2_binary-2.9.1-cp310-cp310-macosx_10_14_x86_64.macosx_10_9_intel.macosx_10_9_x86_64.macosx_10_10_intel.macosx_10_10_x86_64.whl", hash = "sha256:24b0b6688b9f31a911f2361fe818492650795c9e5d3a1bc647acbd7440142a4f"},
+    {file = "psycopg2_binary-2.9.1-cp310-cp310-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:542875f62bc56e91c6eac05a0deadeae20e1730be4c6334d8f04c944fcd99759"},
+    {file = "psycopg2_binary-2.9.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:661509f51531ec125e52357a489ea3806640d0ca37d9dada461ffc69ee1e7b6e"},
+    {file = "psycopg2_binary-2.9.1-cp310-cp310-manylinux_2_24_aarch64.whl", hash = "sha256:d92272c7c16e105788efe2cfa5d680f07e34e0c29b03c1908f8636f55d5f915a"},
+    {file = "psycopg2_binary-2.9.1-cp310-cp310-manylinux_2_24_ppc64le.whl", hash = "sha256:736b8797b58febabb85494142c627bd182b50d2a7ec65322983e71065ad3034c"},
+    {file = "psycopg2_binary-2.9.1-cp310-cp310-win32.whl", hash = "sha256:ebccf1123e7ef66efc615a68295bf6fdba875a75d5bba10a05073202598085fc"},
+    {file = "psycopg2_binary-2.9.1-cp310-cp310-win_amd64.whl", hash = "sha256:1f6ca4a9068f5c5c57e744b4baa79f40e83e3746875cac3c45467b16326bab45"},
     {file = "psycopg2_binary-2.9.1-cp36-cp36m-macosx_10_14_x86_64.macosx_10_9_intel.macosx_10_9_x86_64.macosx_10_10_intel.macosx_10_10_x86_64.whl", hash = "sha256:c250a7ec489b652c892e4f0a5d122cc14c3780f9f643e1a326754aedf82d9a76"},
     {file = "psycopg2_binary-2.9.1-cp36-cp36m-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:aef9aee84ec78af51107181d02fe8773b100b01c5dfde351184ad9223eab3698"},
     {file = "psycopg2_binary-2.9.1-cp36-cp36m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:123c3fb684e9abfc47218d3784c7b4c47c8587951ea4dd5bc38b6636ac57f616"},

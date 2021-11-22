@@ -12,7 +12,7 @@ sd_password = settings.SD_PWD
 
 
 def provider_logout(request):
-    logout_url = "http://explorer.mon.dtln.local/login/"
+    logout_url = "http://explorer.mon.dtln.local:8008/login/"
     redirect_url = (
         settings.OIDC_BASE_URL
         + "/protocol/openid-connect/logout?redirect_uri="

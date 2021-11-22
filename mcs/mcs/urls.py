@@ -15,12 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from authtest import views
-#from django.contrib.auth import views as auth_views
+
+# from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('test/', views.test),
-    path('login/', views.login),
-    path('oidc/', include('mozilla_django_oidc.urls')),
+    path("grappelli/", include("grappelli.urls")),  # grappelli URLS
+    path("admin/", admin.site.urls),
+    path("", include("authtest.urls")),
+    # path("refs/", include("refs.urls")),
 ]
