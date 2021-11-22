@@ -183,7 +183,11 @@ def thruk_request2df(records_filter, record_attrs, column_names):
         DataFrame: Nagios objects DataFrame with attributes
     """
     thruk_rest_api_url = (
-        THRUK_ROOT_URL + records_filter + "&columns=" + ",".join(record_attrs)
+        THRUK_ROOT_URL
+        + records_filter
+        + "&columns="
+        + ",".join(record_attrs)
+        + "&headers=0"
     )
     csv_out = get_rest_api_response(thruk_rest_api_url)
 

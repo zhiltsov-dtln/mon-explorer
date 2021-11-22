@@ -1,0 +1,17 @@
+[flake8]
+# Black default line length
+max-line-length = 88
+
+# Ignores
+# we use binary operator after line break - W503
+# ignore space before colons (for Black formatter) - E203
+ignore=E203,W503
+
+# Excluding some directories:
+exclude =
+  .git
+  __pycache__
+  .venv
+  .eggs
+  *.egg
+  dist
