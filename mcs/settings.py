@@ -22,105 +22,99 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY') 
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['explorer.mon.dtln.local', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ["explorer.mon.dtln.local", "localhost", "127.0.0.1"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'mozilla_django_oidc',
-    'authtest',
-    'explorer'
+    "grappelli",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "mozilla_django_oidc",
+    "django_apscheduler",
+    "authtest",
+    "explorer",
+    "bkp",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
-    'mozilla_django_oidc.auth.OIDCAuthenticationBackend',
+    "mozilla_django_oidc.auth.OIDCAuthenticationBackend",
 ]
 
-ROOT_URLCONF = 'mcs.urls'
+ROOT_URLCONF = "mcs.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "templates"),],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [
+            os.path.join(BASE_DIR, "templates"),
+        ],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'mcs.wsgi.application'
-##############Logging########
+WSGI_APPLICATION = "mcs.wsgi.application"
+
+# Logging
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'console': {
-            'format': '%(name)-12s %(levelname)-8s %(message)s'
-        },
-        'file': {
-            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
-        }
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "console": {"format": "%(name)-12s %(levelname)-8s %(message)s"},
+        "file": {"format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s"},
     },
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'console'
+    "handlers": {
+        "console": {"class": "logging.StreamHandler", "formatter": "console"},
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "formatter": "file",
+            "filename": "debug.log",
         },
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'formatter': 'file',
-            'filename': 'debug.log'
-        }
     },
-    'loggers': {
-        '': {
-            'level': 'DEBUG',
-            'handlers': ['console', 'file']
-        }
-    }
+    "loggers": {"": {"level": "DEBUG", "handlers": ["console", "file"]}},
 }
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql', # так должно быть с версии django 1,8 и выше.
-        'NAME': 'mcsdev',
-        'USER': 'mon',
-        'PASSWORD': 'monexplorer',
-        'HOST': 'localhost',
-        'PORT': '',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",  # так должно быть с версии django 1,8 и выше.
+        "NAME": "mcsdev",
+        "USER": "mon",
+        "PASSWORD": "monexplorer",
+        "HOST": "localhost",
+        "PORT": "",
     }
 }
 
@@ -129,16 +123,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -146,9 +140,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -160,26 +154,34 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = '/login'
-LOGOUT_REDIRECT_URL = '/login'
-OIDC_RP_CLIENT_ID = os.getenv('OIDC_RP_CLIENT_ID')
-OIDC_RP_CLIENT_SECRET = os.getenv('OIDC_RP_CLIENT_SECRET')
+LOGIN_REDIRECT_URL = "/login"
+LOGOUT_REDIRECT_URL = "/login"
+OIDC_RP_CLIENT_ID = os.getenv("OIDC_RP_CLIENT_ID")
+OIDC_RP_CLIENT_SECRET = os.getenv("OIDC_RP_CLIENT_SECRET")
 
-OIDC_RP_SIGN_ALGO = 'RS256'
-OIDC_RP_SCOPES = 'openid email profile'
+OIDC_RP_SIGN_ALGO = "RS256"
+OIDC_RP_SCOPES = "openid email profile"
 
 OIDC_BASE_URL = "https://kk-dev.dtln.cloud/auth/realms/cp"
-OIDC_OP_TOKEN_ENDPOINT = "https://kk-dev.dtln.cloud/auth/realms/cp/protocol/openid-connect/token"
-OIDC_OP_AUTHORIZATION_ENDPOINT = "https://kk-dev.dtln.cloud/auth/realms/cp/protocol/openid-connect/auth"
-OIDC_OP_JWKS_ENDPOINT = "https://kk-dev.dtln.cloud/auth/realms/cp/protocol/openid-connect/certs"
-OIDC_OP_USER_ENDPOINT = "https://kk-dev.dtln.cloud/auth/realms/cp/protocol/openid-connect/userinfo"
-#OIDC_OP_LOGOUT_URL_METHOD = "https://kk-dev.dtln.cloud/auth/realms/cp/protocol/openid-connect/logout?redirect_uri=http://explorer.mon.dtln.local/login/"
+OIDC_OP_TOKEN_ENDPOINT = (
+    "https://kk-dev.dtln.cloud/auth/realms/cp/protocol/openid-connect/token"
+)
+OIDC_OP_AUTHORIZATION_ENDPOINT = (
+    "https://kk-dev.dtln.cloud/auth/realms/cp/protocol/openid-connect/auth"
+)
+OIDC_OP_JWKS_ENDPOINT = (
+    "https://kk-dev.dtln.cloud/auth/realms/cp/protocol/openid-connect/certs"
+)
+OIDC_OP_USER_ENDPOINT = (
+    "https://kk-dev.dtln.cloud/auth/realms/cp/protocol/openid-connect/userinfo"
+)
+# OIDC_OP_LOGOUT_URL_METHOD = "https://kk-dev.dtln.cloud/auth/realms/cp/protocol/openid-connect/logout?redirect_uri=http://explorer.mon.dtln.local/login/"
 OIDC_OP_LOGOUT_URL_METHOD = "authtest.auth.provider_logout"
